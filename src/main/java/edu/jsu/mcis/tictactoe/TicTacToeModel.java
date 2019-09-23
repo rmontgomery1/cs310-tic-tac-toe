@@ -288,20 +288,22 @@ public class TicTacToeModel {
     @Override
     public String toString() {
         
-        StringBuilder output = new StringBuilder("  ");
+        StringBuilder output = new StringBuilder("\n\n  ");
        
         for (int i=0 ;i<getWidth(); i++){
-            output.append(i+1);
+            output.append(i);
         }
-        output.append("/n");
+        output.append("\n\n");
 
         for (int i=0 ;i<getWidth(); i++){
-            output.append(i+1);
+            output.append(i+" ");
             for (int j=0;j<getWidth(); j++){
-                output.append(Mark.EMPTY);
+                output.append(getMark(i,j).toString());
             }
-            output.append("/n");
+            output.append("\n");
         }
+       // output.append("\n");
+
 
         
         /* Output the board contents as a string (see examples) */

@@ -57,7 +57,7 @@ public class TicTacToeView {
     
     public void showBoard(String board) {
         
-        System.out.println("\n\n" + board);
+        System.out.println(board);
         
     }
 	
