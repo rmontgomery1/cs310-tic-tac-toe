@@ -2,11 +2,10 @@ package edu.jsu.mcis;
 
 public class TicTacToeModel {
     
-    private Mark[][] board; /* Game board */
+    private Mark[][] grid; /* Game board */
     private boolean xTurn;  /* True if X is current player */
     private int width;      /* Size of game board */
-    
-    /* ENUM TYPE DEFINITIONS */
+        /* ENUM TYPE DEFINITIONS */
     
     /* Mark (represents X, O, or an empty square */
     
@@ -71,8 +70,13 @@ public class TicTacToeModel {
         
         /* Create board (width x width) as a 2D Mark array */
         
-        board = new Mark[width][width];
+        grid = new Mark[width][width];
 
+        for (int i=0; i<width; i++){
+            for (int j=0; j<width; j++){
+                grid[i][j]= Mark.EMPTY;
+             }
+        }
         /* Initialize board by filling every square with empty marks */
         
         // INSERT YOUR CODE HERE
@@ -88,28 +92,57 @@ public class TicTacToeModel {
            other player before returning TRUE.  Otherwise, return FALSE. */
         
         // INSERT YOUR CODE HERE
+            if ((isValidSquare (row, col))&& (!isSquareMarked (row, col)&& xTurn)){
+         grid [row][col]=Mark.X;
+         xTurn=false;
+         
+         return true;
+        }
+            else if ((isValidSquare (row, col))&& (!isSquareMarked (row, col)&& !xTurn)){
+         grid [row][col]=Mark.O;
+         xTurn=true;
         
-        return false; // remove this line later!
+         return true;
+        }
+         else{
+             return false;
+        }
         
     }
+       
+    
 	
     private boolean isValidSquare(int row, int col) {
-        
+
         /* Return TRUE if the specified location is within the bounds of the board */
         
         // INSERT YOUR CODE HERE
-
-        return false; // remove this line later!
-        
+         if ((row< width)&&(row>=0)&& (col<width)&&(col>=0)&&(!isSquareMarked(row,col))){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
+        
+    
 	
     private boolean isSquareMarked(int row, int col) {
         
         /* Return TRUE if the square at specified location is marked */
         
         // INSERT YOUR CODE HERE
-
-        return false; // remove this line later!
+        if (grid[row][col].equals(Mark.X)){
+            
+            return true;
+        }
+        else if (grid[row][col].equals(Mark.O)){
+            
+            return true;
+        }
+        else{
+            return false;
+        }
             
     }
 	
@@ -118,21 +151,34 @@ public class TicTacToeModel {
         /* Return the mark from the square at the specified location */
         
         // INSERT YOUR CODE HERE
-
-        return null; // remove this line later!
-            
+        
+        return grid[row][col];
+        
     }
+                
+    
 	
     public Result getResult() {
         
         /* Call "isMarkWin()" to see if X or O is the winner, if the game is a
            TIE, or if the game is not over.  Return the corresponding Result
            value */
-        
-        // INSERT YOUR CODE HERE
 
-        return null; // remove this line later!
-        
+        // INSERT YOUR CODE HERE
+    
+        if (isMarkWin(Mark.X) == true){
+            return Result.X;
+        } 
+        else if (isMarkWin(Mark.O) == true){
+            return Result.O;
+        } 
+        else if (isTie() == true) {
+            return Result.TIE;
+        } 
+        else {
+            return Result.NONE;
+        }
+
     }
 	
     private boolean isMarkWin(Mark mark) {
@@ -141,8 +187,58 @@ public class TicTacToeModel {
            winner */
         
         // INSERT YOUR CODE HERE
-
-        return false; // remove this line later!
+{
+        int count=0;
+        for(int r=0; r<width;++r){
+            for(int c=0; c<width;++c){
+                if (grid[r][c]==mark){
+                    count++;
+                }
+                if (count == width){
+                    return true;
+                }
+            }
+            count=0;
+        }
+        for(int c=0; c<width;++c){
+            for(int r=0; r<width;++r){
+                if (grid[r][c]==mark){
+                    count++;                 
+                }
+                if (count == width){
+                    return true;
+                } 
+            }
+            count=0;
+        }
+        for (int i=0; i<width; ++i){
+            if (grid[i][i]==mark){
+                count++;               
+            }
+            //else{
+             //   count=0;
+            //}
+            if (count ==width){
+                return true;
+            }
+            
+        }
+        count = 0;
+        for (int j=0; j<width; ++j){
+            if( grid [j][width-1-j]==mark){
+                count++;              
+            }
+           /* else{
+                count=0;
+            }*/
+            if (count==width){
+                return true;
+            }
+        }
+        count = 0;
+      
+     return false;
+    }
 
     }
 	
@@ -152,9 +248,18 @@ public class TicTacToeModel {
         
         // INSERT YOUR CODE HERE
 
-        return false; // remove this line later!
+        for (int r=0; r<width;++r){
+            for (int c=0; c<width;c++){
+                if ((!isSquareMarked(r,c))||(isMarkWin(Mark.X)||(isMarkWin(Mark.O)))){
+                    return false;
+                }
+            }
+        }
+        
+        return true;
         
     }
+        
 
     public boolean isGameover() {
         
@@ -184,6 +289,20 @@ public class TicTacToeModel {
     public String toString() {
         
         StringBuilder output = new StringBuilder("  ");
+       
+        for (int i=0 ;i<getWidth(); i++){
+            output.append(i+1);
+        }
+        output.append("/n");
+
+        for (int i=0 ;i<getWidth(); i++){
+            output.append(i+1);
+            for (int j=0;j<getWidth(); j++){
+                output.append(Mark.EMPTY);
+            }
+            output.append("/n");
+        }
+
         
         /* Output the board contents as a string (see examples) */
         
