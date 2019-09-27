@@ -1,6 +1,10 @@
 package edu.jsu.mcis;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
-public class TicTacToeController {
+
+public class TicTacToeController implements ActionListener {
 
     private final TicTacToeModel model;
     private final TicTacToeView view;
@@ -12,34 +16,59 @@ public class TicTacToeController {
         /* Initialize model, view, and width */
 
         model = new TicTacToeModel(width);
-        view = new TicTacToeView();
+        view = new TicTacToeView(this,width);
         
     }
 
-    public void start() {
-        /* MAIN LOOP (repeats until game is over) */
 
-        /* Display the board using the View's "showBoard()", then use
-           "getNextMove()" to get the next move from the player.  Enter
-           the move (using the Model's "makeMark()", or display an error
-           using the View's "showInputError()" if the move is invalid. */
 
-        // INSERT YOUR CODE HERE
-        
-        /* After the game is over, show the final board and the winner */
+    public String getMarkAsString(int row, int col) {       
+        return (model.getMark(row, col).toString());       
+    }
+   
+    public TicTacToeView getView() {       
+        return view;       
+    }
 
-        
-        while (!model.isGameover()){
-            view.showBoard(model.toString());
-            TicTacToeMove move = view.getNextMove(model.isXTurn());
-            int x = move.getRow();
-            int y = move.getCol();
-            model.makeMark(x,y);
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        if(event.getSource() instanceof JButton) {
+            
+            String button = ((JButton) event.getSource()).getName();
+            int row = Integer.parseInt(button.substring(6,7));
+            int col = Integer.parseInt(button.substring(7));
+            
+            if(model.makeMark(row, col)) {
+
+                view.updateSquares();
+                if(model.getResult().toString()=="X"){
+                    view.showResult("X");
+                    view.disableSquares();
+
+                }
+                else if(model.getResult().toString()=="O"){
+                    view.showResult("O");
+                    view.disableSquares();
+
+                }
+                else if(model.getResult().toString()=="TIE"){
+                    view.showResult("TIE");
+                    view.disableSquares();
+                }
+                else{
+                    view.clearResult();
+
+                }
+
+
+
+
+
+            }
+
+
+              
         }
-
-        view.showBoard(model.toString());
-        view.showResult(model.getResult().toString());
-        
     }
 
 }

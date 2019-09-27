@@ -302,10 +302,6 @@ public class TicTacToeModel {
             }
             output.append("\n");
         }
-       // output.append("\n");
-
-
-        
         /* Output the board contents as a string (see examples) */
         
         // INSERT YOUR CODE HERE
